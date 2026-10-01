@@ -1,0 +1,127 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Multilingual elementary learner enrolled in or monitored by the EAL program",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 64 },
+        "firstName": { "type": "string", "maxLength": 100 },
+        "preferredName": { "type": "string", "maxLength": 100 },
+        "lastName": { "type": "string", "maxLength": 100 },
+        "dateOfBirth": { "type": "string", "maxLength": 30 },
+        "age": { "type": "number" },
+        "gender": { "type": "string", "maxLength": 30 },
+        "homeLanguage": { "type": "string", "maxLength": 60 },
+        "gradeLevel": { "type": "string", "maxLength": 10 },
+        "homeroom": { "type": "string", "maxLength": 30 },
+        "homeroomTeacher": { "type": "string", "maxLength": 100 },
+        "enteredSchoolDate": { "type": "string", "maxLength": 30 },
+        "profilePhotoURL": { "type": "string", "maxLength": 2048 },
+        "ealStatus": { "type": "string", "enum": ["Current", "Monitor", "Exited"] },
+        "currentSupportLevel": { "type": "string", "enum": ["Intensive", "Targeted", "Monitored"] },
+        "overallWIDALevel": { "type": "number" }
+      },
+      "required": ["studentId", "firstName", "lastName", "homeLanguage", "gradeLevel", "ealStatus", "currentSupportLevel"]
+    },
+    "WidaScore": {
+      "title": "WidaScore",
+      "description": "Standardized WIDA assessment score record tracking language acquisition progression",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 64 },
+        "assessmentDate": { "type": "string", "maxLength": 30 },
+        "assessmentType": { "type": "string", "enum": ["Admissions", "Annual", "Interim"] },
+        "speakingScore": { "type": "number" },
+        "listeningScore": { "type": "number" },
+        "writingScore": { "type": "number" },
+        "readingScore": { "type": "number" },
+        "overallComposite": { "type": "number" },
+        "gradeAtAssessment": { "type": "string", "maxLength": 10 },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["studentId", "assessmentDate", "assessmentType", "speakingScore", "listeningScore", "writingScore", "readingScore", "overallComposite"]
+    },
+    "ProficiencyAssessment": {
+      "title": "ProficiencyAssessment",
+      "description": "Formative language proficiency assessment task (Letter A through H) with modality and evidence",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 64 },
+        "assessmentLetter": { "type": "string", "enum": ["A", "B", "C", "D", "E", "F", "G", "H"] },
+        "assessmentDate": { "type": "string", "maxLength": 30 },
+        "keyLanguageUse": { "type": "string", "maxLength": 100 },
+        "wideELDStandard": { "type": "string", "maxLength": 150 },
+        "languageModality": { "type": "string", "maxLength": 60 },
+        "proficiencyLevel": { "type": "number" },
+        "supportLevel": { "type": "string", "maxLength": 40 },
+        "evidenceType": { "type": "string", "maxLength": 60 },
+        "rubricUsed": { "type": "string", "maxLength": 500 },
+        "teacherNotes": { "type": "string", "maxLength": 4000 },
+        "assessedBy": { "type": "string", "maxLength": 120 }
+      },
+      "required": ["studentId", "assessmentLetter", "assessmentDate", "keyLanguageUse", "languageModality", "proficiencyLevel"]
+    },
+    "LanguageProfile": {
+      "title": "LanguageProfile",
+      "description": "Multilingual learner asset-based language profile answering the four WIDA focal questions",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 64 },
+        "lastUpdated": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["studentId", "lastUpdated"]
+    },
+    "QuarterlySupport": {
+      "title": "QuarterlySupport",
+      "description": "Quarterly EAL intervention tracking and next year projected service need",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 64 },
+        "schoolYear": { "type": "string", "maxLength": 20 },
+        "quarter": { "type": "string", "enum": ["Q1", "Q2", "Q3", "Q4"] },
+        "supportLevel": { "type": "string", "enum": ["Intensive", "Targeted", "Monitored"] },
+        "projectedSupportNextYear": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["studentId", "schoolYear", "quarter", "supportLevel"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Teacher and staff user account with assigned EAL role",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 200 },
+        "displayName": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "enum": ["eal_teacher", "homeroom_teacher", "admin"] },
+        "homeroomGrade": { "type": "string", "maxLength": 30 }
+      },
+      "required": ["email", "displayName", "role"]
+    }
+  },
+  "firestore": {
+    "/students/{studentDocId}": {
+      "schema": { "$ref": "#/entities/Student" },
+      "description": "Collection of all multilingual elementary students"
+    },
+    "/wida_scores/{scoreDocId}": {
+      "schema": { "$ref": "#/entities/WidaScore" },
+      "description": "WIDA standardized scale and composite score progressions"
+    },
+    "/proficiency_assessments/{assessmentDocId}": {
+      "schema": { "$ref": "#/entities/ProficiencyAssessment" },
+      "description": "Portfolio proficiency assessments A through H with evidence media"
+    },
+    "/language_profiles/{profileDocId}": {
+      "schema": { "$ref": "#/entities/LanguageProfile" },
+      "description": "Four-question Can-Do language asset profiles and growth goals"
+    },
+    "/quarterly_support/{supportDocId}": {
+      "schema": { "$ref": "#/entities/QuarterlySupport" },
+      "description": "Quarterly tiered intervention and projection records"
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Teacher and administrator profile and assigned role"
+    }
+  }
+}

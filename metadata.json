@@ -1,0 +1,6 @@
+{
+  "name": "EAL Student Assessment & Proficiency Tracker",
+  "description": "Comprehensive English as an Additional Language (EAL) student assessment, WIDA proficiency tracking, and multilingual learner portfolio for international elementary schools.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
